@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsCell" rowHeight="537" id="KGk-i7-Jjw" customClass="NewsTableViewCell" customModule="VKontakte" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="415" height="537"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="415" height="537"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oVc-UF-9QX">
+                        <rect key="frame" x="5" y="5" width="412" height="55"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="412" id="PTH-6d-ES9"/>
+                            <constraint firstAttribute="width" constant="412" id="bS0-sZ-4iQ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kJ0-sq-Ljv">
+                        <rect key="frame" x="0.0" y="85" width="412" height="412"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="kJ0-sq-Ljv" secondAttribute="height" multiplier="1:1" id="U3C-EO-BRr"/>
+                            <constraint firstAttribute="width" constant="412" id="frt-fr-tkC"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P0y-l0-dTG">
+                        <rect key="frame" x="0.0" y="497" width="415" height="40"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRX-xS-InS" customClass="LikeNewsControl" customModule="VKontakte" customModuleProvider="target">
+                                <rect key="frame" x="5" y="5" width="50" height="30"/>
+                                <color key="backgroundColor" systemColor="systemPinkColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="BOB-hz-mrN"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pcc-9H-lXD" customClass="CommentNewsControl" customModule="VKontakte" customModuleProvider="target">
+                                <rect key="frame" x="60" y="5" width="50" height="30"/>
+                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="GBd-fb-t85"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iF8-ks-Lnx" customClass="ShareNewsControl" customModule="VKontakte" customModuleProvider="target">
+                                <rect key="frame" x="115" y="5" width="50" height="30"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="eqN-A3-TrC"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="shareAction:" destination="KGk-i7-Jjw" eventType="valueChanged" id="6Rw-o4-vTl"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wIP-Ky-uYO" customClass="ViewNewsCounter" customModule="VKontakte" customModuleProvider="target">
+                                <rect key="frame" x="360" y="5" width="50" height="30"/>
+                                <color key="backgroundColor" systemColor="systemCyanColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="nMI-lT-f4Z"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                        <constraints>
+                            <constraint firstItem="iF8-ks-Lnx" firstAttribute="leading" secondItem="Pcc-9H-lXD" secondAttribute="trailing" constant="5" id="29p-hs-Lwj"/>
+                            <constraint firstAttribute="bottom" secondItem="hRX-xS-InS" secondAttribute="bottom" constant="5" id="H64-cp-Wa7"/>
+                            <constraint firstItem="Pcc-9H-lXD" firstAttribute="top" secondItem="P0y-l0-dTG" secondAttribute="top" constant="5" id="IKL-h1-ykh"/>
+                            <constraint firstItem="wIP-Ky-uYO" firstAttribute="top" secondItem="P0y-l0-dTG" secondAttribute="top" constant="5" id="JdV-87-mqL"/>
+                            <constraint firstAttribute="bottom" secondItem="Pcc-9H-lXD" secondAttribute="bottom" constant="5" id="M7j-8A-zBS"/>
+                            <constraint firstAttribute="width" constant="415" id="Nl8-hA-HqF"/>
+                            <constraint firstItem="Pcc-9H-lXD" firstAttribute="leading" secondItem="hRX-xS-InS" secondAttribute="trailing" constant="5" id="Pdl-lY-XQd"/>
+                            <constraint firstAttribute="trailing" secondItem="wIP-Ky-uYO" secondAttribute="trailing" constant="5" id="PtZ-ep-wm4"/>
+                            <constraint firstItem="iF8-ks-Lnx" firstAttribute="top" secondItem="P0y-l0-dTG" secondAttribute="top" constant="5" id="RjH-4q-3Jo"/>
+                            <constraint firstAttribute="height" constant="40" id="cwq-u9-Jrv"/>
+                            <constraint firstItem="hRX-xS-InS" firstAttribute="leading" secondItem="P0y-l0-dTG" secondAttribute="leading" constant="5" id="mXa-3h-GHa"/>
+                            <constraint firstItem="hRX-xS-InS" firstAttribute="top" secondItem="P0y-l0-dTG" secondAttribute="top" constant="5" id="r4w-Xb-ZEr"/>
+                            <constraint firstAttribute="bottom" secondItem="wIP-Ky-uYO" secondAttribute="bottom" constant="5" id="uIk-5D-9gV"/>
+                            <constraint firstAttribute="bottom" secondItem="iF8-ks-Lnx" secondAttribute="bottom" constant="5" id="zb7-V7-3nR"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="kJ0-sq-Ljv" secondAttribute="trailing" id="4sp-k7-ZZC"/>
+                    <constraint firstItem="P0y-l0-dTG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="4yj-4L-19X"/>
+                    <constraint firstItem="kJ0-sq-Ljv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="8Gd-7N-912"/>
+                    <constraint firstItem="oVc-UF-9QX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="DLt-f0-sVz"/>
+                    <constraint firstItem="kJ0-sq-Ljv" firstAttribute="top" secondItem="oVc-UF-9QX" secondAttribute="bottom" constant="25" id="G8i-iA-Jz1"/>
+                    <constraint firstItem="oVc-UF-9QX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="HVC-lv-zjd"/>
+                    <constraint firstAttribute="bottom" secondItem="P0y-l0-dTG" secondAttribute="bottom" id="Nqy-6B-vK7"/>
+                    <constraint firstItem="P0y-l0-dTG" firstAttribute="top" secondItem="kJ0-sq-Ljv" secondAttribute="bottom" id="RQg-VD-66k"/>
+                    <constraint firstAttribute="trailing" secondItem="P0y-l0-dTG" secondAttribute="trailing" id="tyY-AK-gWQ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="newsComment" destination="Pcc-9H-lXD" id="7me-qq-HmJ"/>
+                <outlet property="newsLike" destination="hRX-xS-InS" id="Ixk-JE-GbV"/>
+                <outlet property="newsPhoto" destination="kJ0-sq-Ljv" id="gmk-Wg-o1w"/>
+                <outlet property="newsShare" destination="iF8-ks-Lnx" id="BLo-gZ-ZBx"/>
+                <outlet property="newsStatistic" destination="P0y-l0-dTG" id="FWx-Mf-lh1"/>
+                <outlet property="newsText" destination="oVc-UF-9QX" id="Csa-p2-1xe"/>
+                <outlet property="newsViewsCounter" destination="wIP-Ky-uYO" id="Hn9-dW-igs"/>
+            </connections>
+            <point key="canvasLocation" x="242.75362318840581" y="303.68303571428572"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemCyanColor">
+            <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
