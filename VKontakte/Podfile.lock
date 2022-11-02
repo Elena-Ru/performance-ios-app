@@ -1,0 +1,40 @@
+PODS:
+  - Alamofire (5.6.2)
+  - ReadMoreTextView (3.0.1)
+  - Realm (10.32.0):
+    - Realm/Headers (= 10.32.0)
+  - Realm/Headers (10.32.0)
+  - RealmSwift (10.32.0):
+    - Realm (= 10.32.0)
+  - SDWebImage (5.13.4):
+    - SDWebImage/Core (= 5.13.4)
+  - SDWebImage/Core (5.13.4)
+  - SwiftyJSON (5.0.1)
+
+DEPENDENCIES:
+  - Alamofire
+  - ReadMoreTextView
+  - RealmSwift
+  - SDWebImage
+  - SwiftyJSON
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - ReadMoreTextView
+    - Realm
+    - RealmSwift
+    - SDWebImage
+    - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
+  Realm: a00e93347b8d26d372c7a82f6c0b08d6536a21c8
+  RealmSwift: fe09c29ca409f8f905fe4086f2a52936193f2e3d
+  SDWebImage: e5cc87bf736e60f49592f307bdf9e157189298a3
+  SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
+
+PODFILE CHECKSUM: 49ac782ab360b331b1a54172fbabbbff175c97cc
+
+COCOAPODS: 1.11.3
