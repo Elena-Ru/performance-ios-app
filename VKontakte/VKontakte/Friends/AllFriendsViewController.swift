@@ -12,60 +12,65 @@ import RealmSwift
 
 class AllFriendsViewController: UIViewController {
     
-   
-    
     @IBOutlet weak var friendsTable: UITableView!
     
     lazy var friendsNameControl = FriendsNamesControl()
     
     let session = Session.shared
     let apiManager = APIManager()
+    let userService = UserService()
+    let authService = AuthService()
     let realm = try! Realm()
-    var mainUser = [MainUser]()
-        
-    var friendsList = [User]() // для запроса списка друзей
-    let nName = Notification.Name("logout")
-    
+    var mainUser = MainUser()
+    var friendsList = [User]()
     var firstLetterOfTheName = [Character]()
     var filterFriends = [User]()
     var structuredFriends: [Int: [User]] = [:]
     var photoService: PhotoService?
 
     @IBAction func logOut(_ sender: UIButton) {
-        resetWK()
+        authService.resetWK()
     }
-    
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         friendsTable.dataSource = self
         friendsTable.delegate = self
+    
+        let mainUserRealmAr = Array(realm.objects(MainUser.self))
+      
+        let mainUserRealm = mainUserRealmAr.isEmpty ? nil : mainUserRealmAr[0]
         
-        
-        var mainUserRealm = Array(realm.objects(MainUser.self))
-       
-        if mainUserRealm.first != nil {
-            
-            self.mainUser = mainUserRealm
-            self.session.userName = self.mainUser[0].firstName
-            self.navigationItem.title = "Пользователь "+self.session.userName
-        
+        if mainUserRealm != nil {
+            let mainUserRealmSafe = ThreadSafeReference(to: mainUserRealm!)
+            Dispatch.background {
+                
+                let realmBackground = try! Realm()
+                guard let data = realmBackground.resolve(mainUserRealmSafe) else {
+                    return
+                }
+                self.userService.setMainUser(data, self)
+                
+                Dispatch.main {
+                    
+                    self.navigationItem.title = "Пользователь "+self.session.userName
+                    
+                }
+            }
         } else {
             
-            apiManager.getUserInfo(token: session.token, id: session.userID) { [weak self] response in
-                self!.mainUser = response
-                self!.session.userName = (self?.mainUser[0].firstName)!
-                self!.navigationItem.title = "Пользователь "+self!.session.userName
-                self?.friendsTable?.reloadData()
+            Dispatch.background {
+
+                self.userService.creatMainUser(mainUserRealm, self)
+             
             }
         }
         
-        if mainUserRealm.first?.friends != nil {
+        if mainUserRealmAr.first?.friends != nil {
             
-            self.friendsList = Array(mainUserRealm.first!.friends)
-            self.setFirstLettersArray()
+            self.friendsList = Array(mainUserRealmAr.first!.friends)
+            self.userService.setFirstLettersArray(self.friendsList, &self.firstLetterOfTheName)
             
             if self.firstLetterOfTheName.count != 0{
                 self.friendsNameControl.createFriendsNamesControl(controller: self)
@@ -81,12 +86,12 @@ class AllFriendsViewController: UIViewController {
                 .done(on: .main) { users in
                 
                     self.friendsList = users
-                    self.setFirstLettersArray()
+                    self.userService.setFirstLettersArray(self.friendsList, &self.firstLetterOfTheName)
                     
                     if !self.firstLetterOfTheName.isEmpty {
                         self.friendsNameControl.createFriendsNamesControl(controller: self)
                     }
-                    
+                    self.navigationItem.title = "Пользователь "+self.session.userName
                     self.friendsTable?.reloadData()
                     
                 }.catch { error in
@@ -95,70 +100,40 @@ class AllFriendsViewController: UIViewController {
 
         }
         photoService = PhotoService(container: friendsTable)
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        friendsTable.backgroundColor = UIColor(red: 24/255, green: 15/255, blue: 36/255, alpha: 1)
-        
+        friendsTable.sectionHeaderTopPadding = 0.0
+      
     }
-    
-    func resetWK(){
-        
-        WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSince1970: 0)) {
-            
-            self.session.token = ""
-            NotificationCenter.default.post(name: self.nName, object: nil)
-        }
-    }
+
 }
 
-extension AllFriendsViewController: UITableViewDelegate, UITableViewDataSource{
+extension AllFriendsViewController: UITableViewDelegate, UITableViewDataSource {
 
     
-    //создает массив из первых символов имен друзей
-    func setFirstLettersArray (){
-        for i in 0..<friendsList.count {
-            guard !firstLetterOfTheName.contains(friendsList[i].firstName.first!) else {
-                continue
-            }
-            firstLetterOfTheName.append(friendsList[i].firstName.first!)
-        }
-    }
-    
-    //кол-во секций
      func numberOfSections(in tableView: UITableView) -> Int {
          return firstLetterOfTheName.count
     }
 
-    // заголовки для секций
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 57/255, green: 47/255, blue: 68/255, alpha: 0.5)
+        view.backgroundColor = #colorLiteral(red: 0.9599501491, green: 0.9648430943, blue: 0.9819943309, alpha: 1)
         let label = UILabel(frame: CGRect(x: 50, y: 2, width: 100, height: 21))
         label.text = String(firstLetterOfTheName[section])
-        label.textColor = UIColor.white
+        label.font = .boldSystemFont(ofSize: 16)
         view.addSubview(label)
         return view
    }
     
-    //количество строк в секции
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
          return friendsList.filter({ $0.firstName.first?.lowercased() == firstLetterOfTheName[section].lowercased() }).count
     }
     
-    
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          
          
-         filterFriends = friendsList.filter({
-             $0.firstName.first?.lowercased() == firstLetterOfTheName[indexPath.section].lowercased()})
+         filterFriends = friendsList.filter({ $0.firstName.first?.lowercased() == firstLetterOfTheName[indexPath.section].lowercased() })
          structuredFriends[indexPath.section] =  filterFriends
          
-         
-         
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendsTableCell", for: indexPath) as! AllFriendsTableViewCell
-     
-        
-         
          
          let friend = filterFriends[indexPath.row]
          let name = friend.fullName
@@ -166,27 +141,19 @@ extension AllFriendsViewController: UITableViewDelegate, UITableViewDataSource{
          UIView.animate(withDuration: 0.5, animations: {
              cell.FriendName.frame.origin.y -= 100
          })
-    
-        cell.FriendName.text = name
-         cell.backgroundColor = UIColor.clear
-         cell.FriendName.textColor = UIColor.white
          
-         for subView in cell.AvatarShadow.subviews{
-             if subView is UIImageView{
-                 let imageView = subView as! UIImageView
-                 
-                 let url = URL(string: friend.photo100)
-                 
-                 imageView.image = photoService?.photo(atIndexPath: indexPath, byUrl: friend.photo100)
-                   
-             }
-         }
+         cell.setName(text: name)
+         let imageView = photoService?.photo(atIndexPath: indexPath, byUrl: friend.photo100) ?? UIImage(named: "friend1")
+         cell.setAvatar(img: (imageView ?? UIImage(named: "friend1"))!)
          
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        100
+    }
     
-    //Не делать переход в галерею,  если нет фоток у друга
+
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         let indexPath = friendsTable.indexPathForSelectedRow
         let section = structuredFriends[indexPath!.section]
@@ -203,23 +170,18 @@ extension AllFriendsViewController: UITableViewDelegate, UITableViewDataSource{
             return false}
         return true
     }
-
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showPhoto",
-           
-            
+     
             let destinationVC = segue.destination as? PhotoViewController,
-           let indexPath = friendsTable.indexPathForSelectedRow {
+            let indexPath = friendsTable.indexPathForSelectedRow {
             
             let section = structuredFriends[indexPath.section]
             destinationVC.title = section?[indexPath.row].firstName
-            destinationVC.friendID = section?[indexPath.row].id // передаем ID для запроса фото пользователя
+            destinationVC.friendID = section?[indexPath.row].id
             destinationVC.friend = section?[indexPath.row]
         }
     }
-    
-    
   
 }

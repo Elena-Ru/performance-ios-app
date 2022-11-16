@@ -1,9 +1,8 @@
+
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  NewsThread.swift
-//  VKontakte
-//
-//  Created by Елена Русских on 17.10.2022.
-//
+//   let news = try? newJSONDecoder().decode(News.self, from: jsonData)
 
 import Foundation
 
@@ -36,12 +35,12 @@ class Response: Codable {
     }
 }
 
-// MARK: - GroupNews
+// MARK: - Group
 class GroupNews: Codable {
     let id: Int?
     let name, screenName: String?
     let isClosed: Int?
-    let type: String?
+    let type: GroupType?
     let isAdmin, isMember, isAdvertiser: Int?
     let photo50, photo100, photo200: String?
 
@@ -58,7 +57,7 @@ class GroupNews: Codable {
         case photo200 = "photo_200"
     }
 
-    init(id: Int?, name: String?, screenName: String?, isClosed: Int?, type: String?, isAdmin: Int?, isMember: Int?, isAdvertiser: Int?, photo50: String?, photo100: String?, photo200: String?) {
+    init(id: Int?, name: String?, screenName: String?, isClosed: Int?, type: GroupType?, isAdmin: Int?, isMember: Int?, isAdvertiser: Int?, photo50: String?, photo100: String?, photo200: String?) {
         self.id = id
         self.name = name
         self.screenName = screenName
@@ -73,14 +72,19 @@ class GroupNews: Codable {
     }
 }
 
+enum GroupType: String, Codable {
+    case group = "group"
+    case page = "page"
+}
+
 // MARK: - Item
 class Item: Codable {
     let sourceID, date: Int?
-    let canDoubtCategory, canSetCategory, isFavorite: Bool?
+    let isFavorite: Bool?
     let postType: PostTypeEnum?
     let text: String?
     let markedAsAds: Int?
-    let attachments: [ItemAttachment]?
+    let attachments: [Attachment]?
     let postSource: ItemPostSource?
     let comments: Comments?
     let likes: Likes?
@@ -88,17 +92,17 @@ class Item: Codable {
     let views: Views?
     let donut: Donut?
     let shortTextRate: Double?
-    let carouselOffset, postID: Int?
+    let postID: Int?
     let type: PostTypeEnum?
+    let canDoubtCategory, canSetCategory: Bool?
+    let carouselOffset, topicID: Int?
     let copyHistory: [CopyHistory]?
-    let copyright: Copyright?
-    let topicID: Int?
+    let canDelete, canEdit: Int?
+    let canArchive, isArchived: Bool?
 
     enum CodingKeys: String, CodingKey {
         case sourceID = "source_id"
         case date
-        case canDoubtCategory = "can_doubt_category"
-        case canSetCategory = "can_set_category"
         case isFavorite = "is_favorite"
         case postType = "post_type"
         case text
@@ -107,19 +111,22 @@ class Item: Codable {
         case postSource = "post_source"
         case comments, likes, reposts, views, donut
         case shortTextRate = "short_text_rate"
-        case carouselOffset = "carousel_offset"
         case postID = "post_id"
         case type
-        case copyHistory = "copy_history"
-        case copyright
+        case canDoubtCategory = "can_doubt_category"
+        case canSetCategory = "can_set_category"
+        case carouselOffset = "carousel_offset"
         case topicID = "topic_id"
+        case copyHistory = "copy_history"
+        case canDelete = "can_delete"
+        case canEdit = "can_edit"
+        case canArchive = "can_archive"
+        case isArchived = "is_archived"
     }
 
-    init(sourceID: Int?, date: Int?, canDoubtCategory: Bool?, canSetCategory: Bool?, isFavorite: Bool?, postType: PostTypeEnum?, text: String?, markedAsAds: Int?, attachments: [ItemAttachment]?, postSource: ItemPostSource?, comments: Comments?, likes: Likes?, reposts: Reposts?, views: Views?, donut: Donut?, shortTextRate: Double?, carouselOffset: Int?, postID: Int?, type: PostTypeEnum?, copyHistory: [CopyHistory]?, copyright: Copyright?, topicID: Int?) {
+    init(sourceID: Int?, date: Int?, isFavorite: Bool?, postType: PostTypeEnum?, text: String?, markedAsAds: Int?, attachments: [Attachment]?, postSource: ItemPostSource?, comments: Comments?, likes: Likes?, reposts: Reposts?, views: Views?, donut: Donut?, shortTextRate: Double?, postID: Int?, type: PostTypeEnum?, canDoubtCategory: Bool?, canSetCategory: Bool?, carouselOffset: Int?, topicID: Int?, copyHistory: [CopyHistory]?, canDelete: Int?, canEdit: Int?, canArchive: Bool?, isArchived: Bool?) {
         self.sourceID = sourceID
         self.date = date
-        self.canDoubtCategory = canDoubtCategory
-        self.canSetCategory = canSetCategory
         self.isFavorite = isFavorite
         self.postType = postType
         self.text = text
@@ -132,27 +139,32 @@ class Item: Codable {
         self.views = views
         self.donut = donut
         self.shortTextRate = shortTextRate
-        self.carouselOffset = carouselOffset
         self.postID = postID
         self.type = type
-        self.copyHistory = copyHistory
-        self.copyright = copyright
+        self.canDoubtCategory = canDoubtCategory
+        self.canSetCategory = canSetCategory
+        self.carouselOffset = carouselOffset
         self.topicID = topicID
+        self.copyHistory = copyHistory
+        self.canDelete = canDelete
+        self.canEdit = canEdit
+        self.canArchive = canArchive
+        self.isArchived = isArchived
     }
 }
 
-// MARK: - ItemAttachment
-class ItemAttachment: Codable {
+// MARK: - Attachment
+class Attachment: Codable {
     let type: AttachmentType?
     let video: Video?
-    let photo: PhotoNews?
     let link: Link?
+    let photo: PhotoNews?
 
-    init(type: AttachmentType?, video: Video?, photo: PhotoNews?, link: Link?) {
+    init(type: AttachmentType?, video: Video?, link: Link?, photo: PhotoNews?) {
         self.type = type
         self.video = video
-        self.photo = photo
         self.link = link
+        self.photo = photo
     }
 }
 
@@ -222,7 +234,7 @@ class PhotoNews: Codable {
 class Size: Codable {
     let height: Int?
     let url: String?
-    let type: SizeType?
+    let type: String?
     let width, withPadding: Int?
 
     enum CodingKeys: String, CodingKey {
@@ -230,7 +242,7 @@ class Size: Codable {
         case withPadding = "with_padding"
     }
 
-    init(height: Int?, url: String?, type: SizeType?, width: Int?, withPadding: Int?) {
+    init(height: Int?, url: String?, type: String?, width: Int?, withPadding: Int?) {
         self.height = height
         self.url = url
         self.type = type
@@ -239,24 +251,7 @@ class Size: Codable {
     }
 }
 
-enum SizeType: String, Codable {
-    case k = "k"
-    case l = "l"
-    case m = "m"
-    case o = "o"
-    case p = "p"
-    case q = "q"
-    case r = "r"
-    case s = "s"
-    case temp = "temp"
-    case w = "w"
-    case x = "x"
-    case y = "y"
-    case z = "z"
-}
-
 enum AttachmentType: String, Codable {
-    case doc = "doc"
     case link = "link"
     case photo = "photo"
     case video = "video"
@@ -266,19 +261,18 @@ enum AttachmentType: String, Codable {
 class Video: Codable {
     let accessKey: String?
     let canComment, canLike, canRepost, canSubscribe: Int?
-    let canAddToFaves, canAdd, comments, date: Int?
+    let canAddToFaves, canAdd, date: Int?
     let videoDescription: String?
     let duration: Int?
-    let image: [Size]?
-    let id, ownerID: Int?
+    let image, firstFrame: [Size]?
+    let width, height, id, ownerID: Int?
     let title: String?
     let isFavorite: Bool?
     let trackCode: String?
+    let videoRepeat: Int?
     let type: AttachmentType?
-    let views, localViews: Int?
-    let platform: VideoPlatform?
-    let firstFrame: [Size]?
-    let width, height, videoRepeat: Int?
+    let views, comments, localViews: Int?
+    let platform: Platform?
 
     enum CodingKeys: String, CodingKey {
         case accessKey = "access_key"
@@ -288,22 +282,22 @@ class Video: Codable {
         case canSubscribe = "can_subscribe"
         case canAddToFaves = "can_add_to_faves"
         case canAdd = "can_add"
-        case comments, date
+        case date
         case videoDescription = "description"
-        case duration, image, id
+        case duration, image
+        case firstFrame = "first_frame"
+        case width, height, id
         case ownerID = "owner_id"
         case title
         case isFavorite = "is_favorite"
         case trackCode = "track_code"
-        case type, views
+        case videoRepeat = "repeat"
+        case type, views, comments
         case localViews = "local_views"
         case platform
-        case firstFrame = "first_frame"
-        case width, height
-        case videoRepeat = "repeat"
     }
 
-    init(accessKey: String?, canComment: Int?, canLike: Int?, canRepost: Int?, canSubscribe: Int?, canAddToFaves: Int?, canAdd: Int?, comments: Int?, date: Int?, videoDescription: String?, duration: Int?, image: [Size]?, id: Int?, ownerID: Int?, title: String?, isFavorite: Bool?, trackCode: String?, type: AttachmentType?, views: Int?, localViews: Int?, platform: VideoPlatform?, firstFrame: [Size]?, width: Int?, height: Int?, videoRepeat: Int?) {
+    init(accessKey: String?, canComment: Int?, canLike: Int?, canRepost: Int?, canSubscribe: Int?, canAddToFaves: Int?, canAdd: Int?, date: Int?, videoDescription: String?, duration: Int?, image: [Size]?, firstFrame: [Size]?, width: Int?, height: Int?, id: Int?, ownerID: Int?, title: String?, isFavorite: Bool?, trackCode: String?, videoRepeat: Int?, type: AttachmentType?, views: Int?, comments: Int?, localViews: Int?, platform: Platform?) {
         self.accessKey = accessKey
         self.canComment = canComment
         self.canLike = canLike
@@ -311,28 +305,29 @@ class Video: Codable {
         self.canSubscribe = canSubscribe
         self.canAddToFaves = canAddToFaves
         self.canAdd = canAdd
-        self.comments = comments
         self.date = date
         self.videoDescription = videoDescription
         self.duration = duration
         self.image = image
+        self.firstFrame = firstFrame
+        self.width = width
+        self.height = height
         self.id = id
         self.ownerID = ownerID
         self.title = title
         self.isFavorite = isFavorite
         self.trackCode = trackCode
+        self.videoRepeat = videoRepeat
         self.type = type
         self.views = views
+        self.comments = comments
         self.localViews = localViews
         self.platform = platform
-        self.firstFrame = firstFrame
-        self.width = width
-        self.height = height
-        self.videoRepeat = videoRepeat
     }
 }
 
-enum VideoPlatform: String, Codable {
+enum Platform: String, Codable {
+    case empty = ""
     case youTube = "YouTube"
 }
 
@@ -359,7 +354,7 @@ class CopyHistory: Codable {
     let id, ownerID, fromID, date: Int?
     let postType: PostTypeEnum?
     let text: String?
-    let attachments: [CopyHistoryAttachment]?
+    let attachments: [Attachment]?
     let postSource: CopyHistoryPostSource?
 
     enum CodingKeys: String, CodingKey {
@@ -372,7 +367,7 @@ class CopyHistory: Codable {
         case postSource = "post_source"
     }
 
-    init(id: Int?, ownerID: Int?, fromID: Int?, date: Int?, postType: PostTypeEnum?, text: String?, attachments: [CopyHistoryAttachment]?, postSource: CopyHistoryPostSource?) {
+    init(id: Int?, ownerID: Int?, fromID: Int?, date: Int?, postType: PostTypeEnum?, text: String?, attachments: [Attachment]?, postSource: CopyHistoryPostSource?) {
         self.id = id
         self.ownerID = ownerID
         self.fromID = fromID
@@ -382,58 +377,6 @@ class CopyHistory: Codable {
         self.attachments = attachments
         self.postSource = postSource
     }
-}
-
-// MARK: - CopyHistoryAttachment
-class CopyHistoryAttachment: Codable {
-    let type: AttachmentType?
-    let photo: PhotoNews?
-    let link: Link?
-    let doc: Doc?
-    let video: Video?
-
-    init(type: AttachmentType?, photo: PhotoNews?, link: Link?, doc: Doc?, video: Video?) {
-        self.type = type
-        self.photo = photo
-        self.link = link
-        self.doc = doc
-        self.video = video
-    }
-}
-
-// MARK: - Doc
-class Doc: Codable {
-    let id, ownerID: Int?
-    let title: String?
-    let size: Int?
-    let ext: EXT?
-    let date, type: Int?
-    let url: String?
-    let accessKey: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case ownerID = "owner_id"
-        case title, size, ext, date, type, url
-        case accessKey = "access_key"
-    }
-
-    init(id: Int?, ownerID: Int?, title: String?, size: Int?, ext: EXT?, date: Int?, type: Int?, url: String?, accessKey: String?) {
-        self.id = id
-        self.ownerID = ownerID
-        self.title = title
-        self.size = size
-        self.ext = ext
-        self.date = date
-        self.type = type
-        self.url = url
-        self.accessKey = accessKey
-    }
-}
-
-enum EXT: String, Codable {
-    case djvu = "djvu"
-    case pdf = "pdf"
 }
 
 // MARK: - CopyHistoryPostSource
@@ -452,18 +395,6 @@ enum PostSourceType: String, Codable {
 
 enum PostTypeEnum: String, Codable {
     case post = "post"
-}
-
-// MARK: - Copyright
-class Copyright: Codable {
-    let link: String?
-    let type, name: String?
-
-    init(link: String?, type: String?, name: String?) {
-        self.link = link
-        self.type = type
-        self.name = name
-    }
 }
 
 // MARK: - Donut
@@ -501,31 +432,30 @@ class Likes: Codable {
 // MARK: - ItemPostSource
 class ItemPostSource: Codable {
     let type: PostSourceType?
-    let platform: PostSourcePlatform?
+    let platform: String?
 
-    init(type: PostSourceType?, platform: PostSourcePlatform?) {
+    init(type: PostSourceType?, platform: String?) {
         self.type = type
         self.platform = platform
     }
 }
 
-enum PostSourcePlatform: String, Codable {
-    case adminApp = "admin_app"
-    case iphone = "iphone"
-}
-
 // MARK: - Reposts
 class Reposts: Codable {
-    let count, userReposted: Int?
+    let count, userReposted, wallCount, mailCount: Int?
 
     enum CodingKeys: String, CodingKey {
         case count
         case userReposted = "user_reposted"
+        case wallCount = "wall_count"
+        case mailCount = "mail_count"
     }
 
-    init(count: Int?, userReposted: Int?) {
+    init(count: Int?, userReposted: Int?, wallCount: Int?, mailCount: Int?) {
         self.count = count
         self.userReposted = userReposted
+        self.wallCount = wallCount
+        self.mailCount = mailCount
     }
 }
 
@@ -547,8 +477,8 @@ class Profile: Codable {
     let online: Int?
     let firstName, lastName: String?
     let canAccessClosed, isClosed: Bool?
-    let onlineMobile, onlineApp: Int?
     let deactivated: String?
+    let onlineMobile, onlineApp: Int?
 
     enum CodingKeys: String, CodingKey {
         case id, sex
@@ -561,12 +491,12 @@ class Profile: Codable {
         case lastName = "last_name"
         case canAccessClosed = "can_access_closed"
         case isClosed = "is_closed"
+        case deactivated
         case onlineMobile = "online_mobile"
         case onlineApp = "online_app"
-        case deactivated
     }
 
-    init(id: Int?, sex: Int?, screenName: String?, photo50: String?, photo100: String?, onlineInfo: OnlineInfo?, online: Int?, firstName: String?, lastName: String?, canAccessClosed: Bool?, isClosed: Bool?, onlineMobile: Int?, onlineApp: Int?, deactivated: String?) {
+    init(id: Int?, sex: Int?, screenName: String?, photo50: String?, photo100: String?, onlineInfo: OnlineInfo?, online: Int?, firstName: String?, lastName: String?, canAccessClosed: Bool?, isClosed: Bool?, deactivated: String?, onlineMobile: Int?, onlineApp: Int?) {
         self.id = id
         self.sex = sex
         self.screenName = screenName
@@ -578,9 +508,9 @@ class Profile: Codable {
         self.lastName = lastName
         self.canAccessClosed = canAccessClosed
         self.isClosed = isClosed
+        self.deactivated = deactivated
         self.onlineMobile = onlineMobile
         self.onlineApp = onlineApp
-        self.deactivated = deactivated
     }
 }
 
@@ -608,3 +538,6 @@ class OnlineInfo: Codable {
         self.isMobile = isMobile
     }
 }
+
+
+

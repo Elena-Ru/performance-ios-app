@@ -225,7 +225,7 @@ class PhotoGalleryViewController: UIViewController {
     
     
     
-    func animatePropertyAnimtatorLeftComplition(){
+    func animatePropertyAnimtatorLeftComplition() {
         
         UIView.transition(with: self.currentView,
                           duration: 0.3,
@@ -247,27 +247,22 @@ class PhotoGalleryViewController: UIViewController {
     }
     
     
-   func changeStatusPropertyAnimator( propertyAnimator: UIViewPropertyAnimator){
+   func changeStatusPropertyAnimator( propertyAnimator: UIViewPropertyAnimator) {
         if propertyAnimator.fractionComplete > 0.5 {
             propertyAnimator.continueAnimation(withTimingParameters: nil,
                                                    durationFactor: 0.5)
-        } else{
+        } else {
             propertyAnimator.isReversed = true
             propertyAnimator.continueAnimation(withTimingParameters: nil,
                                                    durationFactor: 0.5)
         }
     }
-    
-    
-    
 }
 
 func endPreviousAnimation(propertyAnimator: UIViewPropertyAnimator)  {
     propertyAnimator.isReversed = true
     propertyAnimator.continueAnimation(withTimingParameters: nil, durationFactor: 0.5)
 }
-
-
 
 
 public enum PanDirection: Int {

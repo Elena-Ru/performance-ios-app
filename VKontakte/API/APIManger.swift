@@ -18,7 +18,7 @@ import PromiseKit
 class APIManager{
     
     let baseUrl = "https://api.vk.com"
-    let clientId = "51445484" //id_приложения
+    let clientId = "51477716" //id_приложения
     let session = Session.shared
     
     
@@ -285,27 +285,7 @@ class APIManager{
     }
     
     
-    func getUserInfo(token: String, id: Int, completion: @escaping ([MainUser]) -> Void){
-        
-        let path = "/method/users.get"
-        
-        let parameters: Parameters = [
-            "access_token" : token,
-            "user_id": id,
-            "client_id": clientId,
-            "v": "5.131"
-        ]
-        let url = baseUrl+path
-        AF.request(url, method: .get, parameters: parameters).responseData { response in
-            guard let data = response.value  else { return}
 
-            let user = try! JSONDecoder().decode( UserResponse.self, from: data).response
-            
-            self.saveData(user)
-            
-            completion(user)
-        }
-    }
     
 
     
