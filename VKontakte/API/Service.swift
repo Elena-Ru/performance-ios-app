@@ -29,11 +29,14 @@ class Service {
                 "v": "5.131"
             ]
             let url = baseUrl+path
-            
+    
             AF.request(url, method: .get, parameters: parameters).responseData { response in
                 guard let data = response.value  else { return}
-                let news = try? JSONDecoder().decode(News.self, from: data)
-                completion(news!)
+                
+                    let news = try? JSONDecoder().decode(News.self, from: data)
+          
+                    completion(news!)
+                
             }
         }
     

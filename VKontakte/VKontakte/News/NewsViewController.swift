@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SDWebImage
 
 class NewsThreadViewController: UIViewController {
 
@@ -67,7 +66,8 @@ extension NewsThreadViewController: UITableViewDataSource, UITableViewDelegate {
         case 1:
             if newsList[indexPath.section].text != "" {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTextCell", for: indexPath) as! NewsTextTableViewCell
-                cell.newsText.text = newsList[indexPath.section].text
+                cell.setNewsText(text: newsList[indexPath.section].text!)
+               // cell.newsText.text = newsList[indexPath.section].text
                 return cell
             } else {
                 if newsList[indexPath.section].attachments != nil
@@ -76,7 +76,6 @@ extension NewsThreadViewController: UITableViewDataSource, UITableViewDelegate {
                         return cell
                 } else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "NewsLikeCommentsCell", for: indexPath) as! NewsLikeCommentsTableViewCell
-                    print(indexPath.section)
 
                     let newsItem  = newsList[indexPath.section]
                
@@ -157,11 +156,10 @@ extension NewsThreadViewController: UICollectionViewDelegate, UICollectionViewDa
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewsPhotoCollectionViewCell", for: indexPath) as! NewsPhotoCollectionViewCell
        
-        let url = URL(string: (newsList[collectionView.tag].attachments?[indexPath.row].photo?.sizes?[0].url)!
-        
-        )
-        cell.newsPhoto.sd_setImage(with: url)
-      
+       
+        if  let url = URL(string: (newsList[collectionView.tag].attachments?[indexPath.row].photo?.sizes?[0].url)!) {
+            cell.setAvatar(img: url)
+        }
         return cell
     }
     

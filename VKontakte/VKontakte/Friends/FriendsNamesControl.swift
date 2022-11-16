@@ -35,9 +35,6 @@ class FriendsNamesControl: UIControl, UIScrollViewDelegate {
                                                       width: 30,
                                                       height: heightControl))
         
-        
-        friendsNameControl.backgroundColor =  .clear
-        friendsNameControl.layer.cornerRadius = 10
         friendsNameControl.translatesAutoresizingMaskIntoConstraints = false
         
         controller.view.addSubview(friendsNameControl)
@@ -66,12 +63,11 @@ class FriendsNamesControl: UIControl, UIScrollViewDelegate {
         
         scroll.contentSize = CGSize(width: friendsNameControl.frame.width, height: friendsNameControl.frame.height + 50)
         scroll.indicatorStyle = .white
-        scroll.backgroundColor = .clear
         scroll.alwaysBounceVertical = true
 
         friendsNameControl.addSubview(scroll)
         
-        var yCoordinat = 10
+        var yCoordinat = 5
 
         for i in 0..<controller.firstLetterOfTheName.count{
             let buttonLetter = UIButton(frame: CGRect(x: Int(bounds.width / 2 ),
@@ -79,9 +75,8 @@ class FriendsNamesControl: UIControl, UIScrollViewDelegate {
                                                     width: 25,
                                                     height: heightButton))
             buttonLetter.setTitle(String(controller.firstLetterOfTheName[i]), for: .normal)
-            buttonLetter.setTitleColor(.white, for: .normal)
-            buttonLetter.titleLabel?.font = .boldSystemFont(ofSize: 21)
-            buttonLetter.backgroundColor = .clear
+            buttonLetter.setTitleColor(.black, for: .normal)
+            buttonLetter.titleLabel?.font = .boldSystemFont(ofSize: 16)
             scroll.addSubview(buttonLetter)
 
             buttonLetter.addTarget(self, action: #selector(selectLetter(_:)), for:

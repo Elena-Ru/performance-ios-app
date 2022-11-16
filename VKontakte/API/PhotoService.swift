@@ -75,7 +75,7 @@ guard
     
     
     func photo(atIndexPath indexPath: IndexPath, byUrl url: String) -> UIImage? {
-//var photoService = PhotoService(container: friendsTable)
+        
         var image: UIImage?
         if let photo = images[url] {
             image = photo

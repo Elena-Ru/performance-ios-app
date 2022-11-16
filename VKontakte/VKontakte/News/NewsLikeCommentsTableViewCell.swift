@@ -15,9 +15,6 @@ class NewsLikeCommentsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var commentsNewsControl: CommentCountControl!
     
-    var backgroundColorControlDeselect = UIColor(red: 57/255, green: 47/255, blue: 68/255, alpha: 0.05)
-    var backgroundColorControlSelect = UIColor.systemRed.withAlphaComponent(0.3)
-    var backgroundColorCell = UIColor(red: 24/255, green: 15/255, blue: 36/255, alpha: 1)
     var cornerRadius: CGFloat = 15
     
     override func awakeFromNib() {
@@ -77,7 +74,7 @@ func groupAnimation(){
     
   
     func configure(newsItem: Item, cellIndex: Int) {
-       // self.backgroundColor = backgroundColorCell
+    
         setControl(control: likeNewsControl)
        self.likeNewsControl.setLikeNewsControl(news: newsItem, cellIndex: cellIndex)
         setControl(control: commentsNewsControl)
@@ -87,8 +84,7 @@ func groupAnimation(){
         
     }
     
-    func setControl(control: UIControl){
-        control.backgroundColor = backgroundColorControlDeselect
+    func setControl(control: UIControl) {
         control.layer.cornerRadius = cornerRadius
         control.layer.masksToBounds = true
     }

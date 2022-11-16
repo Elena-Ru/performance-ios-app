@@ -69,7 +69,7 @@ class RoundedImage: UIView {
            shadowView.layer.shadowOffset = .zero
            shadowView.layer.shadowRadius = shadowRadius
            shadowView.layer.shadowOpacity = shadowOpacity
-           shadowView.layer.backgroundColor = UIColor.blue.cgColor
+           shadowView.layer.backgroundColor = UIColor.white.cgColor
            shadowView.clipsToBounds = false
            
            addSubview(shadowView)

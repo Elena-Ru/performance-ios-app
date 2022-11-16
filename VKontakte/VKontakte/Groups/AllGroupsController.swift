@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import SDWebImage
+
 
 class AllGroupsController: UITableViewController, UISearchBarDelegate {
     
@@ -62,7 +62,6 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
         return groups.count
     }
 
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! AllGroupsCell
@@ -70,19 +69,22 @@ class AllGroupsController: UITableViewController, UISearchBarDelegate {
         if isFiltering(){
             self.currentGroup = filteredGroups[indexPath.row]
             let url = URL(string: filteredGroups[indexPath.row].photoGroup)
-            cell.GroupImage.sd_setImage(with: url)
+            cell.setAvatar(img: url!)
         } else {
             self.currentGroup = groups[indexPath.row]
             let url = URL(string: groups[indexPath.row].photoGroup)
-            cell.GroupImage.sd_setImage(with: url)
+            cell.setAvatar(img: url!)
+    
         }
         
-        cell.GroupName.text = self.currentGroup.name
+        cell.setName(text: self.currentGroup.name)
       
         return cell
     }
 
-
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        100
+    }
 
 
     func filterGroupsForSearchText (searchText: String){

@@ -13,15 +13,11 @@ import Alamofire
 protocol GroupSavable: NSObject {
     func saveGroup(groups: [Group])
     func getGroup(groups: [Group])
-    
-    
     func getOldRealmGroups(groups: [Group])
     func getNewToRealm(groups: [Group])
 }
 
 class MyGroupsController: UITableViewController, GroupSavable {
-  
-    
   
     let apiManager = APIManager()
     let session = Session.shared
@@ -232,6 +228,11 @@ class MyGroupsController: UITableViewController, GroupSavable {
         }
         
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        100
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -243,13 +244,14 @@ class MyGroupsController: UITableViewController, GroupSavable {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! MyGroupsCell
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as! MyGroupsCell
         let group = groupListRealm?[indexPath.row].name
         let url = groupListRealm?[indexPath.row].photoGroup
-        cell.groupImage.image = photoService?.photo(atIndexPath: indexPath, byUrl: url!)
-        //cell.groupImage.sd_setImage(with: url)
-        cell.groupName.text = group
+        let image = photoService?.photo(atIndexPath: indexPath, byUrl: url!)
+        
+        cell.setAvatar(img: (image ?? UIImage(named: "friend1"))!)
+        cell.setName(text: group ?? "no name")
         return cell
     }
     
@@ -265,4 +267,7 @@ class MyGroupsController: UITableViewController, GroupSavable {
             }
         } 
     }
+    
+
+    
 }
